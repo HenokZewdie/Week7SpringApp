@@ -122,17 +122,17 @@ public class HomeController {
         return "skill";
     }
     @RequestMapping(value = "displayAll", method = RequestMethod.GET)
-    public String DisplayAll( Model model, User user){
+    public String DisplayAll( Model model, User user, Skill skill){
 
 
         user = userRepository.findByEmail(emailSession);
         Iterable<Education> Educvalues = educationRepository.findByEmail(emailSession);
         Iterable<Experience> Expvalues = experienceRepository.findByEmail(emailSession);
-        Iterable<Skill> Skillvalues = skillRepository.findByEmail(emailSession);
+        skill = skillRepository.findByEmail(emailSession);
         model.addAttribute("values", user);
         model.addAttribute("Educvalues", Educvalues);
         model.addAttribute("Expvalues", Expvalues);
-        model.addAttribute("Skillvalues", Skillvalues);
+        model.addAttribute("Skillvalues", skill);
         return "displayAll";
     }
 
@@ -146,13 +146,24 @@ public class HomeController {
         job.setDate(new Date());
         job.setPostedBy(principal.getName());
         jobRepository.save(job);
-
-        skill = skillRepository.findBySkills(job.getSkills());
-       // List<String> emaillist = new ArrayList<>();
-        model.addAttribute("tomail",skill);
         return "recruiterlogin";
     }
 
+    @RequestMapping(value = "/recommended", method = RequestMethod.GET)
+    public String recommendGet(Model model){
+        model.addAttribute("user",new User());
+        return "redirect:/recommended";
+    }
+    @RequestMapping(value = "/recommended", method = RequestMethod.POST)
+    public String recommendPost(@ModelAttribute User user, Model model, Principal principal, Skill skill, Job job){
+        String logedName = principal.getName();
+        user = userRepository.findByUsername(logedName);
+        String email = user.getEmail();
+        skill = skillRepository.findByEmail(email);
+        job=jobRepository.findBySkills(skill.getSkills());
+        model.addAttribute("tomail",job);
+        return "display";
+    }
     @RequestMapping(value = "/jobseeker", method = RequestMethod.GET)
     public String SearchByName(Model model){
         model.addAttribute("job",new Job());
@@ -194,11 +205,11 @@ public class HomeController {
         user = userRepository.findByEmail(emailSession);
         Iterable<Education> Educvalues = educationRepository.findByEmail(emailSession);
         Iterable<Experience> Expvalues = experienceRepository.findByEmail(emailSession);
-        Iterable<Skill> Skillvalues = skillRepository.findByEmail(emailSession);
+        skill = skillRepository.findByEmail(emailSession);
         model.addAttribute("values", user);
         model.addAttribute("Educvalues", Educvalues);
         model.addAttribute("Expvalues", Expvalues);
-        model.addAttribute("Skillvalues", Skillvalues);
+        model.addAttribute("Skillvalues", skill);
         return "displayAll";
     }
     public UserValidator getUserValidator() {

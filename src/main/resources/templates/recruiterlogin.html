@@ -11,7 +11,7 @@
     <div class="jumbotron">
         <nav class="navbar navbar-default" th:replace="base::nav2"></nav>
         <div class="container">
-            <h3>Only Visible for Recruiters</h3>
+            <h3>Post Bob is only Visible for Recruiters</h3>
             <form th:action="@{/jobseeker}" th:object="${job}"  method="post" >
                 <input type="text" th:field="*{title}" name="title" placeholder="By Title"/>
                 <button type="submit">Search</button>
