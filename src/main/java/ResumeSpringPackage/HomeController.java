@@ -123,16 +123,14 @@ public class HomeController {
     }
     @RequestMapping(value = "displayAll", method = RequestMethod.GET)
     public String DisplayAll( Model model, User user, Skill skill){
-
-
         user = userRepository.findByEmail(emailSession);
         Iterable<Education> Educvalues = educationRepository.findByEmail(emailSession);
         Iterable<Experience> Expvalues = experienceRepository.findByEmail(emailSession);
-        skill = skillRepository.findByEmail(emailSession);
+        Iterable<Skill> skillo = skillRepository.findByEmail(emailSession);
         model.addAttribute("values", user);
         model.addAttribute("Educvalues", Educvalues);
         model.addAttribute("Expvalues", Expvalues);
-        model.addAttribute("Skillvalues", skill);
+        model.addAttribute("Skillvalues", skillo);
         return "displayAll";
     }
 
@@ -159,9 +157,9 @@ public class HomeController {
         String logedName = principal.getName();
         user = userRepository.findByUsername(logedName);
         String email = user.getEmail();
-        skill = skillRepository.findByEmail(email);
-        job=jobRepository.findBySkills(skill.getSkills());
-        model.addAttribute("tomail",job);
+        List<Skill> NSkill = skillRepository.findByEmail(email);
+        List<Job> nJob=jobRepository.findBySkills(skill.getEmail());
+        model.addAttribute("tomail",nJob);
         return "display";
     }
     @RequestMapping(value = "/jobseeker", method = RequestMethod.GET)
@@ -205,11 +203,11 @@ public class HomeController {
         user = userRepository.findByEmail(emailSession);
         Iterable<Education> Educvalues = educationRepository.findByEmail(emailSession);
         Iterable<Experience> Expvalues = experienceRepository.findByEmail(emailSession);
-        skill = skillRepository.findByEmail(emailSession);
+        Iterable<Skill> skillo = skillRepository.findByEmail(emailSession);
         model.addAttribute("values", user);
         model.addAttribute("Educvalues", Educvalues);
         model.addAttribute("Expvalues", Expvalues);
-        model.addAttribute("Skillvalues", skill);
+        model.addAttribute("Skillvalues", skillo);
         return "displayAll";
     }
     public UserValidator getUserValidator() {

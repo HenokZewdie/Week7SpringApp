@@ -10,7 +10,7 @@ import java.util.List;
 public interface JobRepository extends CrudRepository<Job, Long> {
 List<Job> findByTitle(String title);
 List<Job> findByEmployer(String employer);
-Job findBySkills(String skills);
+List<Job> findBySkills(String skills);
 
 }
 
